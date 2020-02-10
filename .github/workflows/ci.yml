@@ -11,23 +11,45 @@ jobs:
     steps:
     - uses: actions/checkout@v1
     
+    - name: Check free space 
+      shell: bash 
+      run: |
+        df -h
+    
+    # Workaround for https://github.com/actions/virtual-environments/issues/326 until the fix is deployed
+    - name: Remove
+      shell: pwsh 
+      run: |
+        rm -Force -Recurse -Path 'C:\Program Files (x86)\Android'
+        rm -Force -Recurse -Path 'C:\Program Files\Java'
+        rm -Force -Recurse -Path 'C:\Program Files\dotnet'
+        rm -Force -Recurse -Path 'C:\Program Files (x86)\Google'
+        rm -Force -Recurse -Path 'C:\tools\php'
+        rm -Force -Recurse -Path 'C:\Rust'
+
+    - name: Check free space 
+      shell: bash 
+      run: |
+        df -h
+    
     - name: Download custom vcpkg and additional ports 
       shell: bash
       run: |
-        git clone -b 2019.10 https://github.com/microsoft/vcpkg  C:/vcpkg-idjl
-        C:/vcpkg-idjl/bootstrap-vcpkg.sh
+        mkdir C:/idjl
+        git clone -b 2020.01 https://github.com/microsoft/vcpkg  C:/idjl/vcpkg
+        C:/idjl/vcpkg/bootstrap-vcpkg.sh
         git clone https://github.com/robotology-dependencies/robotology-vcpkg-binary-ports C:/robotology-vcpkg-binary-ports
     - name: Install vcpkg ports
       shell: bash
       run: |
         # TinyXML is not installed as a workaround for https://github.com/robotology/ycm/pull/296
-        C:/vcpkg-idjl/vcpkg.exe --overlay-ports=C:/robotology-vcpkg-binary-ports install --triplet x64-windows eigen3 libxml2 eigen3 matio ipopt-binary protobuf asio ace
+        C:/idjl/vcpkg/vcpkg.exe --overlay-ports=C:/robotology-vcpkg-binary-ports install --triplet x64-windows eigen3 libxml2 eigen3 matio ipopt-binary protobuf asio ace pcl
         # Remove temporary files https://github.com/Microsoft/vcpkg/blob/master/docs/about/faq.md#how-can-i-remove-temporary-files
-        rm -rf C:/vcpkg-idjl/buildtrees 
-        rm -rf C:/vcpkg-idjl/packages 
-        rm -rf C:/vcpkg-idjl/downloads 
+        rm -rf C:/idjl/vcpkg/buildtrees 
+        rm -rf C:/idjl/vcpkg/packages 
+        rm -rf C:/idjl/vcpkg/downloads 
         
     - uses: actions/upload-artifact@master
       with:
         name: vcpkg-idjl
-        path: C:/vcpkg-idjl
+        path: C:/idjl/vcpkg
