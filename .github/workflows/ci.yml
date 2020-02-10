@@ -16,22 +16,6 @@ jobs:
       run: |
         df -h
     
-    # Workaround for https://github.com/actions/virtual-environments/issues/326 until the fix is deployed
-    - name: Remove
-      shell: pwsh 
-      run: |
-        rm -Force -Recurse -Path 'C:\Program Files (x86)\Android'
-        rm -Force -Recurse -Path 'C:\Program Files\Java'
-        rm -Force -Recurse -Path 'C:\Program Files\dotnet'
-        rm -Force -Recurse -Path 'C:\Program Files (x86)\Google'
-        rm -Force -Recurse -Path 'C:\tools\php'
-        rm -Force -Recurse -Path 'C:\Rust'
-
-    - name: Check free space 
-      shell: bash 
-      run: |
-        df -h
-    
     - name: Download custom vcpkg and additional ports 
       shell: bash
       run: |
