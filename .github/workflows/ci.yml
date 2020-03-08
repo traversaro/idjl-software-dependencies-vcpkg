@@ -20,7 +20,10 @@ jobs:
       shell: bash
       run: |
         mkdir C:/idjl
-        git clone -b 2020.01 https://github.com/microsoft/vcpkg  C:/idjl/vcpkg
+        # git clone -b 2020.01 https://github.com/microsoft/vcpkg  C:/idjl/vcpkg
+        # Temporary workaround for https://github.com/microsoft/vcpkg/issues/10322 
+        # From https://github.com/microsoft/vcpkg/issues/10322
+        git clone -b patch-1 https://github.com/MaverickTse/vcpkg C:/idjl/vcpkg
         C:/idjl/vcpkg/bootstrap-vcpkg.sh
         git clone https://github.com/robotology-dependencies/robotology-vcpkg-binary-ports C:/robotology-vcpkg-binary-ports
     - name: Install vcpkg ports
