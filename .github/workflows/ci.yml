@@ -25,7 +25,7 @@ jobs:
       shell: bash
       run: |
         # Install direct dependencies of idjl-software, iDynTree and YARP and some ports with optional features that are necessary later to avoid to rebuilt them later
-        C:/idjl/vcpkg/vcpkg.exe --overlay-ports=C:/robotology-vcpkg-binary-ports install --triplet x64-windows curl[core,non-http,ssl,winssl] harfbuzz[core,ucdn] freetype[bzip2,core,png] libwebp[core,nearlossless,simd,unicode] libpq[core,openssl,zlib] libzip[bzip2,core,openssl] eigen3 libxml2 matio ensenso-binary ipopt-binary protobuf asio ace pcl sqlite3[core,tool]    
+        C:/idjl/vcpkg/vcpkg.exe --overlay-ports=C:/robotology-vcpkg-binary-ports install --triplet x64-windows curl[core,non-http,ssl,winssl] harfbuzz[core,ucdn] freetype[bzip2,core,png] libpq[core,openssl,zlib] libzip[bzip2,core,openssl] eigen3 libxml2 matio ensenso-binary ipopt-binary protobuf asio ace pcl sqlite3[core,tool]    
     
     # Remove temporary files https://github.com/Microsoft/vcpkg/blob/master/docs/about/faq.md#how-can-i-remove-temporary-files
     # For some reason doing using git bash to do rm -rf fails for icu's port buildtrees, probably for the use of msys2 
