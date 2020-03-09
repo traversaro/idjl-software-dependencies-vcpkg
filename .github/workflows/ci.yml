@@ -38,9 +38,9 @@ jobs:
     - name: Cleanup vcpkg temporary directories
       shell: cmd 
       run: |
-        RMDIR /Q/S C:/idjl/vcpkg/buildtrees
-        RMDIR /Q/S C:/idjl/vcpkg/packages
-        RMDIR /Q/S C:/idjl/vcpkg/downloads
+        RMDIR /Q/S C:\idjl\vcpkg\buildtrees
+        RMDIR /Q/S C:\idjl\vcpkg\packages
+        RMDIR /Q/S C:\idjl\vcpkg\downloads
         
     - uses: actions/upload-artifact@v1
       with:
@@ -87,9 +87,9 @@ jobs:
     - name: Cleanup vcpkg temporary directories
       shell: cmd 
       run: |
-        RMDIR /Q/S C:/idjl/vcpkg/buildtrees
-        RMDIR /Q/S C:/idjl/vcpkg/packages
-        RMDIR /Q/S C:/idjl/vcpkg/downloads
+        RMDIR /Q/S C:\idjl\vcpkg\buildtrees
+        RMDIR /Q/S C:\idjl\vcpkg\packages
+        RMDIR /Q/S C:\idjl\vcpkg\downloads
         
     - uses: actions/upload-artifact@v1
       with:
