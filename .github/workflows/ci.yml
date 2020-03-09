@@ -30,11 +30,15 @@ jobs:
         # Install direct dependencies of idjl-software, iDynTree and YARP and some ports with optional features that are necessary later to avoid to rebuilt them later
         # C:/idjl/vcpkg/vcpkg.exe --overlay-ports=C:/robotology-vcpkg-binary-ports install --triplet x64-windows curl[core,non-http,ssl,winssl] harfbuzz[core,ucdn] freetype[bzip2,core,png] libwebp[core,nearlossless,simd,unicode] libpq[core,openssl,zlib] libzip[bzip2,core,openssl] eigen3 libxml2 matio ensenso-binary ipopt-binary protobuf asio ace pcl sqlite3[core,tool]
         C:/idjl/vcpkg/vcpkg.exe --overlay-ports=C:/robotology-vcpkg-binary-ports install --triplet x64-windows eigen3 icu[core]
-        
+    
+    - name: Cleanup vcpkg temporary directories
+      shell: pwsh 
+      run: |
         # Remove temporary files https://github.com/Microsoft/vcpkg/blob/master/docs/about/faq.md#how-can-i-remove-temporary-files
-        rm -rf C:/idjl/vcpkg/buildtrees 
-        rm -rf C:/idjl/vcpkg/packages 
-        rm -rf C:/idjl/vcpkg/downloads 
+        # For some reason doing using git bash to do rm -rf fails for icu's port buildtrees, probably for the use of msys2 
+        Remove-Item –path C:/idjl/vcpkg/buildtrees  –recurse
+        Remove-Item –path C:/idjl/vcpkg/packages -recurse
+        Remove-Item –path C:/idjl/vcpkg/downloads -recurse
         
     - uses: actions/upload-artifact@v1
       with:
@@ -75,10 +79,14 @@ jobs:
         # C:/idjl/vcpkg/vcpkg.exe --overlay-ports=C:/robotology-vcpkg-binary-ports install --triplet x64-windows boost-asio boost-any boost-date-time boost-filesystem boost-format boost-interprocess boost-iostreams boost-program-options boost-property-tree boost-regex boost-smart-ptr boost-system boost-thread boost-variant boost-uuid bullet3 cppzmq curl dlfcn-win32 freeimage libyaml libzip jsoncpp ogre protobuf qt5-base qwt sqlite3[core,tool] tbb tinyxml tinyxml2 urdfdom zeromq
         C:/idjl/vcpkg/vcpkg.exe --overlay-ports=C:/robotology-vcpkg-binary-ports install --triplet x64-windows boost-regex
         
+    - name: Cleanup vcpkg temporary directories
+      shell: pwsh 
+      run: |
         # Remove temporary files https://github.com/Microsoft/vcpkg/blob/master/docs/about/faq.md#how-can-i-remove-temporary-files
-        rm -rf C:/idjl/vcpkg/buildtrees 
-        rm -rf C:/idjl/vcpkg/packages 
-        rm -rf C:/idjl/vcpkg/downloads 
+        # For some reason doing using git bash to do rm -rf fails for icu's port buildtrees, probably for the use of msys2 
+        Remove-Item –path C:/idjl/vcpkg/buildtrees  –recurse
+        Remove-Item –path C:/idjl/vcpkg/packages -recurse
+        Remove-Item –path C:/idjl/vcpkg/downloads -recurse
         
     - uses: actions/upload-artifact@v1
       with:
