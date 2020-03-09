@@ -3,10 +3,8 @@ name: CI
 on: [push, pull_request]
 
 jobs:
-  build:
-    # We would like to build with v140 toolset to be compatible with both VS2017, 2019
-    # But that will only be avaiilable in late november: https://github.com/actions/virtual-environments/issues/68  
-    runs-on: windows-2019
+  build-base:
+    runs-on: windows-latest
 
     steps:
     - uses: actions/checkout@v1
@@ -25,22 +23,62 @@ jobs:
         # From https://github.com/microsoft/vcpkg/issues/10322
         git clone -b patch-1 https://github.com/MaverickTse/vcpkg C:/idjl/vcpkg
         C:/idjl/vcpkg/bootstrap-vcpkg.sh
-        git clone https://github.com/robotology-dependencies/robotology-vcpkg-binary-ports C:/robotology-vcpkg-binary-ports
+        git clone -b v0.1.0 https://github.com/robotology-dependencies/robotology-vcpkg-binary-ports C:/robotology-vcpkg-binary-ports
     - name: Install vcpkg ports
       shell: bash
       run: |
-        # Install dependencies for gazebo11 and related ignition dependencies (listed in https://bitbucket.org/osrf/gazebodistro/src/default/gazebo11.yaml)         
-        C:/idjl/vcpkg/vcpkg.exe --overlay-ports=C:/robotology-vcpkg-binary-ports install --triplet x64-windows boost-asio boost-any boost-date-time boost-filesystem boost-format boost-interprocess boost-iostreams boost-program-options boost-property-tree boost-regex boost-smart-ptr boost-system boost-thread boost-variant boost-uuid bullet3 cppzmq curl dlfcn-win32 freeimage libyaml libzip jsoncpp ogre protobuf qt5-base qwt sqlite3[core,tool] tbb tinyxml tinyxml2 urdfdom zeromq
-        
-        # Install direct dependencies of idjl-software, iDynTree and YARP
-        C:/idjl/vcpkg/vcpkg.exe --overlay-ports=C:/robotology-vcpkg-binary-ports install --triplet x64-windows eigen3 libxml2 eigen3 matio ensenso-binary ipopt-binary protobuf asio ace pcl
+        # Install direct dependencies of idjl-software, iDynTree and YARP and some ports with optional features that are necessary later to avoid to rebuilt them later
+        C:/idjl/vcpkg/vcpkg.exe --overlay-ports=C:/robotology-vcpkg-binary-ports install --triplet x64-windows curl[core,non-http,ssl,winssl] harfbuzz[core,ucdn] freetype[bzip2,core,png] libwebp[core,nearlossless,simd,unicode] libpq[core,openssl,zlib] libzip[bzip2,core,openssl] eigen3 libxml2 matio ensenso-binary ipopt-binary protobuf asio ace pcl sqlite3[core,tool]
         
         # Remove temporary files https://github.com/Microsoft/vcpkg/blob/master/docs/about/faq.md#how-can-i-remove-temporary-files
         rm -rf C:/idjl/vcpkg/buildtrees 
         rm -rf C:/idjl/vcpkg/packages 
         rm -rf C:/idjl/vcpkg/downloads 
         
-    - uses: actions/upload-artifact@master
+    - uses: actions/upload-artifact@v1
       with:
-        name: vcpkg-idjl
+        name: vcpkg-idjl-base
+        path: C:/idjl/vcpkg
+        
+    - uses: actions/upload-artifact@v1
+      with:
+        name: robotology-vcpkg-binary-ports
+        path: C:/robotology-vcpkg-binary-ports
+
+  build-step-two:
+    runs-on: windows-latest
+    needs: build-base
+
+    steps:
+    - uses: actions/checkout@v1
+    
+    - uses: actions/download-artifact@v1
+      with:
+        name: vcpkg-idjl-base
+        path: C:/idjl/vcpkg
+
+    - uses: actions/download-artifact@v1
+      with:
+        name: robotology-vcpkg-binary-ports
+        path: C:/robotology-vcpkg-binary-ports
+    
+    - name: Check free space 
+      shell: bash 
+      run: |
+        df -h
+    
+    - name: Install vcpkg ports
+      shell: bash
+      run: |
+        # Install dependencies for gazebo11 and related ignition dependencies (listed in https://bitbucket.org/osrf/gazebodistro/src/default/gazebo11.yaml)         
+        C:/idjl/vcpkg/vcpkg.exe --overlay-ports=C:/robotology-vcpkg-binary-ports install --triplet x64-windows boost-asio boost-any boost-date-time boost-filesystem boost-format boost-interprocess boost-iostreams boost-program-options boost-property-tree boost-regex boost-smart-ptr boost-system boost-thread boost-variant boost-uuid bullet3 cppzmq curl dlfcn-win32 freeimage libyaml libzip jsoncpp ogre protobuf qt5-base qwt sqlite3[core,tool] tbb tinyxml tinyxml2 urdfdom zeromq
+        
+        # Remove temporary files https://github.com/Microsoft/vcpkg/blob/master/docs/about/faq.md#how-can-i-remove-temporary-files
+        rm -rf C:/idjl/vcpkg/buildtrees 
+        rm -rf C:/idjl/vcpkg/packages 
+        rm -rf C:/idjl/vcpkg/downloads 
+        
+    - uses: actions/upload-artifact@v1
+      with:
+        name: vcpkg-idjl-step-two
         path: C:/idjl/vcpkg
