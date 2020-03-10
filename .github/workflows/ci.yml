@@ -25,8 +25,7 @@ jobs:
       shell: bash
       run: |
         # Install direct dependencies of idjl-software, iDynTree and YARP and some ports with optional features that are necessary later to avoid to rebuilt them later
-        # C:/idjl/vcpkg/vcpkg.exe --overlay-ports=C:/robotology-vcpkg-binary-ports install --triplet x64-windows curl[core,non-http,ssl,winssl] harfbuzz[core,ucdn] freetype[bzip2,core,png] libpq[core,openssl,zlib] libzip[bzip2,core,openssl] eigen3 libxml2 matio ensenso-binary ipopt-binary protobuf asio ace pcl sqlite3[core,tool]    
-        C:/idjl/vcpkg/vcpkg.exe --overlay-ports=C:/robotology-vcpkg-binary-ports install --triplet x64-windows eigen3
+        C:/idjl/vcpkg/vcpkg.exe --overlay-ports=C:/robotology-vcpkg-binary-ports install --triplet x64-windows curl[core,non-http,ssl,winssl] harfbuzz[core,ucdn] freetype[bzip2,core,png] libpq[core,openssl,zlib] libzip[bzip2,core,openssl] eigen3 libxml2 matio ensenso-binary ipopt-binary protobuf asio ace pcl sqlite3[core,tool]    
         
     # Remove temporary files https://github.com/Microsoft/vcpkg/blob/master/docs/about/faq.md#how-can-i-remove-temporary-files
     # For some reason doing using git bash to do rm -rf fails for icu's port buildtrees, probably for the use of msys2 
@@ -87,8 +86,7 @@ jobs:
       shell: bash
       run: |
         # Install dependencies for gazebo11 and related ignition dependencies (listed in https://bitbucket.org/osrf/gazebodistro/src/default/gazebo11.yaml)         
-        # C:/idjl/vcpkg/vcpkg.exe --overlay-ports=C:/robotology-vcpkg-binary-ports install --triplet x64-windows boost-asio boost-any boost-date-time boost-filesystem boost-format boost-interprocess boost-iostreams boost-program-options boost-property-tree boost-regex boost-smart-ptr boost-system boost-thread boost-variant boost-uuid bullet3 cppzmq curl dlfcn-win32 freeimage libyaml libzip jsoncpp ogre protobuf qt5-base qwt sqlite3[core,tool] tbb tinyxml tinyxml2 urdfdom zeromq
-        C:/idjl/vcpkg/vcpkg.exe --overlay-ports=C:/robotology-vcpkg-binary-ports install --triplet x64-windows tinyxml
+        C:/idjl/vcpkg/vcpkg.exe --overlay-ports=C:/robotology-vcpkg-binary-ports install --triplet x64-windows boost-asio boost-any boost-date-time boost-filesystem boost-format boost-interprocess boost-iostreams boost-program-options boost-property-tree boost-regex boost-smart-ptr boost-system boost-thread boost-variant boost-uuid bullet3 cppzmq curl dlfcn-win32 freeimage libyaml libzip jsoncpp ogre protobuf qt5-base qwt sqlite3[core,tool] tbb tinyxml tinyxml2 urdfdom zeromq
         
     # Remove temporary files https://github.com/Microsoft/vcpkg/blob/master/docs/about/faq.md#how-can-i-remove-temporary-files
     # For some reason doing using git bash to do rm -rf fails for icu's port buildtrees, probably for the use of msys2 
