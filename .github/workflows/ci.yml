@@ -61,10 +61,14 @@ jobs:
         
     - name: Upload Release Asset
       if: github.event_name == 'release'
-      uses: AButler/upload-release-assets@v2.0
+      uses: actions/upload-release-asset@v1.0.1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
-          files: 'vcpkg-idjl-base.zip'
-          repo-token: ${{ secrets.GITHUB_TOKEN }}
+          upload_url: ${{ github.event.release.upload_url }}
+          asset_path: ./vcpkg-idjl-base.zip
+          asset_name: vcpkg-idjl-base.zip
+          asset_content_type: application/zip
 
   build-step-two:
     runs-on: windows-latest
@@ -123,10 +127,14 @@ jobs:
         
     - name: Upload Release Asset
       if: github.event_name == 'release'
-      uses: AButler/upload-release-assets@v2.0
+      uses: actions/upload-release-asset@v1.0.1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
-          files: 'vcpkg-idjl-step-two.zip'
-          repo-token: ${{ secrets.GITHUB_TOKEN }}
+          upload_url: ${{ github.event.release.upload_url }}
+          asset_path: ./vcpkg-idjl-step-two.zip
+          asset_name: vcpkg-idjl-step-two.zip
+          asset_content_type: application/zip
 
   build-final:
     runs-on: windows-latest
@@ -194,9 +202,14 @@ jobs:
       run: |
         7z a vcpkg-idjl-final.zip C:\idjl
         
+    # See https://github.com/actions/upload-release-asset/issues/34
     - name: Upload Release Asset
       if: github.event_name == 'release'
-      uses: AButler/upload-release-assets@v2.0
+      uses: actions/upload-release-asset@v1.0.1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
-          files: 'vcpkg-idjl-final.zip'
-          repo-token: ${{ secrets.GITHUB_TOKEN }}
+          upload_url: ${{ github.event.release.upload_url }}
+          asset_path: ./vcpkg-idjl-final.zip
+          asset_name: vcpkg-idjl-final.zip
+          asset_content_type: application/zip
