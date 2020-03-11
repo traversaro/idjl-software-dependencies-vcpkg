@@ -8,6 +8,12 @@ jobs:
 
     steps:
     - uses: actions/checkout@v1
+  
+    # Workaround for https://github.com/actions/virtual-environments/issues/10
+    - name: Avoid to use GitHub Actions-installed boost
+      shell: bash
+      run: |
+        echo "::set-env name=BOOST_ROOT::"
     
     - name: Check free space 
       shell: bash 
@@ -66,6 +72,12 @@ jobs:
 
     steps:
     - uses: actions/checkout@v1
+
+    # Workaround for https://github.com/actions/virtual-environments/issues/10
+    - name: Avoid to use GitHub Actions-installed boost
+      shell: bash
+      run: |
+        echo "::set-env name=BOOST_ROOT::"
     
     - uses: actions/download-artifact@v1
       with:
@@ -122,6 +134,12 @@ jobs:
 
     steps:
     - uses: actions/checkout@v1
+  
+    # Workaround for https://github.com/actions/virtual-environments/issues/10
+    - name: Avoid to use GitHub Actions-installed boost
+      shell: bash
+      run: |
+        echo "::set-env name=BOOST_ROOT::"
     
     - uses: actions/download-artifact@v1
       with:
