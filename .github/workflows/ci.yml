@@ -27,7 +27,7 @@ jobs:
       shell: bash
       run: |
         # TinyXML is not installed as a workaround for https://github.com/robotology/ycm/pull/296
-        C:/idjl/vcpkg/vcpkg.exe --overlay-ports=C:/robotology-vcpkg-binary-ports install --triplet x64-windows eigen3 libxml2 eigen3 matio ensenso-binary ipopt-binary protobuf asio ace pcl
+        C:/idjl/vcpkg/vcpkg.exe --overlay-ports=C:/robotology-vcpkg-binary-ports install --triplet x64-windows eigen3 libxml2 eigen3 matio ensenso-binary ipopt-binary protobuf asio ace pcl winpcap
         # Remove temporary files https://github.com/Microsoft/vcpkg/blob/master/docs/about/faq.md#how-can-i-remove-temporary-files
         rm -rf C:/idjl/vcpkg/buildtrees 
         rm -rf C:/idjl/vcpkg/packages 
