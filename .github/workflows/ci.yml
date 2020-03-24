@@ -23,10 +23,16 @@ jobs:
     - name: Download custom vcpkg and additional ports 
       shell: bash
       run: |
+        choco install -y wget
         mkdir C:/idjl
-        git clone -b 2020.01 https://github.com/microsoft/vcpkg  C:/idjl/vcpkg
+        cd C:/idjl
+        # Download a custom vcpkg 2020.01 that already contains ace pre-compiled, as a workaround for https://github.com/actions/virtual-environments/issues/605
+        wget https://github.com/iit-danieli-joint-lab/idjl-software-dependencies-vcpkg/releases/download/temporary-storage/idjl-vcpkg-2020.01-ace.zip
+        7z x idjl-vcpkg-2020.01-ace.zip
         C:/idjl/vcpkg/bootstrap-vcpkg.sh
         git clone https://github.com/robotology-dependencies/robotology-vcpkg-binary-ports C:/robotology-vcpkg-binary-ports
+        
+        
     - name: Install vcpkg ports
       shell: bash
       run: |
